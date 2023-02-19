@@ -89,8 +89,8 @@ export default {
       }).then(res => {
         console.log(res);
         var records=res.data.data.records
-        this.noticeList.newsNotice = records.filter((e) => e.title === "新闻通知");
-        this.noticeList.systemNotice = records.filter((e) => e.title==="系统通知");
+        this.noticeList.newsNotice = records.filter((e) => e.typeId == "1");
+        this.noticeList.systemNotice = records.filter((e) => e.typeId=="0");
         console.log(this.noticeList);
       }).catch(err => {
         console.log(err);

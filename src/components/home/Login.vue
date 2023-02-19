@@ -69,7 +69,7 @@ export default {
                     that.$router.push('/audit')
                 }else{//用户
                     //跳转到新闻推荐页，显示登录状态 
-                    that.$router.push('/personal')
+                    that.$router.push('/')
                 }
             }else{
                 that.$message({

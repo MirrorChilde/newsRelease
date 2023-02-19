@@ -1,6 +1,8 @@
 <template>
 	<div class="user">
-		<div class="user-img"><img :src="avatar?avatar:require('../../assets/img_/icon/avatar.jpg')"/></div>
+		<!-- <div class="user-img"><img :src="avatar?avatar:'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png'"/></div> -->
+		<div class="user-img"><img src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"/></div>
+
 	</div>
 </template>
 
