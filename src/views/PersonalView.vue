@@ -38,7 +38,7 @@ export default {
     }
   },
   mounted() {
-    if (this.$route.fullPath==="/notice") {
+    if (this.$route.fullPath=="/notice") {
       this.isShow = false
     }
     // console.log(this.$route);

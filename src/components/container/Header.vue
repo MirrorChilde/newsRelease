@@ -37,6 +37,16 @@
                 个人中心
               </router-link>
             </el-dropdown-item>
+            <el-dropdown-item v-show="roleName==='admin'">
+              <router-link to="/admin">
+                管理中心
+              </router-link>
+            </el-dropdown-item>
+            <el-dropdown-item v-show="roleName==='auditor'">
+              <router-link to="/audit">
+                审核中心
+              </router-link>
+            </el-dropdown-item>
             <el-dropdown-item>
               <router-link to="/login">
                 退出

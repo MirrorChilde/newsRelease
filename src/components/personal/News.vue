@@ -115,17 +115,17 @@ export default {
   },
   methods: {
     handleEdit(index, row) {
-      console.log(index, row);
+      // console.log(index, row);
       this.$router.push("/detail/"+row.id)
         
       },
     handleDelete(index, row) {
-        console.log(index, row);
+        // console.log(index, row);
         this.axios({
             method: "DELETE",
             url:"/api/news/delete?newsId="+this.newsList[index].id
           }).then(res => {
-            console.log(res);
+            // console.log(res);
             this.$message({
                 type:'success',
                 message: '删除成功'
@@ -140,7 +140,7 @@ export default {
         // url:`/api/audit/newsList?current=${this.current}&&size=${this.size}`
         url:`/api/news/myNews?current=${this.current}&&size=${this.size}`
       }).then(res => { 
-        console.log(res);
+        // console.log(res);
         this.newsList = res.data.data.records;
       }).catch(err => { 
         console.log(err);
@@ -150,7 +150,7 @@ export default {
       this.$refs.filterTable.clearFilter();
     },
     filterPlate(value, row) {
-      console.log(row);
+      // console.log(row);
       return row.plateName==value
     },
     filterTag(value, row) {
@@ -159,12 +159,12 @@ export default {
         "审核成功":2,
         "审核不通过":3
       }
-      console.log(key[value]);
+      // console.log(key[value]);
       // var lable=value == '审核中' ?0: (scope.row.status == '3' ? '审核不通过': '审核成功')
       return row.status == key[value];
     },
     formatter(row, column) {
-      console.log(456);
+      // console.log(456);
       return row.address;
     },
     getPlateList() {
@@ -172,7 +172,7 @@ export default {
         method: "GET",
         url:"/api/plate/list"
       }).then(res => {
-        console.log(res);
+        // console.log(res);
         var records=res.data.data.records
         this.plates = records.map(e => {
           var obj = {

@@ -8,6 +8,7 @@
     <div class="noticeBox">
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="系统通知" name="first">
+          <div v-show="noticeList.systemNotice.length==0">暂无消息</div>
           <div class="noticeList"  v-for="(item,i) in noticeList.systemNotice" :key="i">
             <div class="avatar">
               <el-avatar :src="imgUrl"></el-avatar>
@@ -38,7 +39,20 @@
           </div>
         </el-tab-pane>
         <!-- <el-tab-pane label="订阅发布者" name="third">暂无消息</el-tab-pane> -->
+
       </el-tabs>
+      <div class="block" style="margin-top: 15px;">
+            <el-pagination
+            small
+            @size-change="getNoticeList"
+            @current-change="getNoticeList"
+            :current-page.sync="current"
+            :page-sizes="[10, 20, 30, 40]"
+            :page-size="size"
+            layout="sizes, prev, pager, next"
+            :total="total">
+            </el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -54,8 +68,11 @@ export default {
       noticeList: {
         newsNotice: [],
         systemNotice:[]
-      }
-      }
+      },
+      size: 10,
+      current: 1,
+      total:1000
+    }
   },
   mounted() { 
     this.getNoticeList()
@@ -67,8 +84,10 @@ export default {
     getNoticeList() {
       this.axios({
         methods: "GET",
-        url:"/api/notices/list"
+        // url:`/api/news/myNews?current=${this.current}&&size=${this.size}`
+        url:`/api/notices/list?current=${this.current}&&size=${this.size}`
       }).then(res => {
+        console.log(res);
         var records=res.data.data.records
         this.noticeList.newsNotice = records.filter((e) => e.title === "新闻通知");
         this.noticeList.systemNotice = records.filter((e) => e.title==="系统通知");
