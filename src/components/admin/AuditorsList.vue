@@ -13,27 +13,27 @@
     </div>
     <div class="auditorsList">
       <el-table :data="auditorsList" style="width: 100%" :header-cell-style="{ background: '#E8EBEF' }">
-        <el-table-column label="名称" width="150">
+        <el-table-column label="名称" width="200">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.realName }}</span>
+            <span>{{ scope.row.realName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="公司" width="200">
+        <el-table-column label="公司" width="300">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.company }}</span>
+            <span>{{ scope.row.company }}</span>
           </template>
         </el-table-column>
         <el-table-column label="申请时间" width="200">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.applyTime }}</span>
+            <span>{{ scope.row.applyTime }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="状态">
+        <el-table-column label="状态" width="150">
           <template slot-scope="scope">
-            <span style="margin-left: 10px">{{ scope.row.approveStatus != 0 ? scope.row.approveStatus == 1 ? "已通过" : "未通过"
+            <span>{{ scope.row.approveStatus != 0 ? scope.row.approveStatus == 1 ? "已通过" : "未通过"
               : "未审核"
             }}</span>
-            <!-- <span style="margin-left: 10px">{{ scope.row.approveStatus==0?"不通过":"已通过" }}</span> -->
+            <!-- <span  >{{ scope.row.approveStatus==0?"不通过":"已通过" }}</span> -->
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -44,10 +44,15 @@
         </el-table-column>
       </el-table>
     </div>
+    <div class="block" style="margin-top: 15px;">
+      <el-pagination small @size-change="getAuditorsList" @current-change="getAuditorsList" :current-page.sync="current"
+        :page-sizes="[10, 20, 30, 40]" :page-size="size" layout="sizes, prev, pager, next" :total="total">
+      </el-pagination>
+    </div>
 
     <!-- 修改密码弹框 -->
     <el-dialog title="修改审核员密码" :visible.sync="changeFormVisible" width="30%">
-      <el-form :model="changeForm" :rules="rules" ref="changeForm" label-width="100px" class="demo-accountForm">
+      <el-form :model="changeForm" ref="changeForm" label-width="100px" class="demo-accountForm">
         <el-form-item label="账号" prop="account">
           <el-input type="text" v-model="changeForm.account" autocomplete="off" disabled></el-input>
         </el-form-item>
@@ -77,6 +82,9 @@ export default {
         account: '',
         pwd: ''
       },
+      current: 1,
+      size: 10,
+      total: 100
     }
   },
   mounted() {
@@ -124,10 +132,10 @@ export default {
     getAuditorsList() {
       this.axios({
         method: "GET",
-        url: "/api/apply/publisher/list"
+        url: `/api/apply/publisher/list?current=${this.current}&&size=${this.size}`
       }).then(res => {
         console.log(res);
-        this.auditorsList = res.data.data.records;
+        this.auditorsList = res.data.data.records.reverse();
       }).catch(err => {
         console.log(err);
       })
