@@ -1,12 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import personal from '../views/PersonalView.vue'
 
 Vue.use(Router)
 
 export default new Router({
-  mode:'history',
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -27,23 +26,24 @@ export default new Router({
     },
     {
       path: '/personal',
-      component: personal,
+      component: () => import('../views/PersonalView.vue'),
+      redirect: '/personal/profile',
       children: [
         {
           path: '/personal/profile',
-          component: ()=>import('../components/personal/Profile.vue')
+          component: () => import('../components/personal/Profile.vue')
         },
         {
           path: '/personal/news',
-          component: ()=>import('../components/personal/News.vue')
+          component: () => import('../components/personal/News.vue')
         },
         {
           path: '/personal/draft',
-          component: ()=>import('../components/personal/Draft.vue')
+          component: () => import('../components/personal/Draft.vue')
         },
         {
           path: '/personal/editor',
-          component: ()=>import('../components/personal/EditorNews.vue')
+          component: () => import('../components/personal/EditorNews.vue')
         },
         {
           path: '/notice',
@@ -60,22 +60,23 @@ export default new Router({
       // component: () => import('../components/home/adminLogin.vue'),
       path: '/admin',
       component: () => import('../views/AdminView.vue'),
+      redirect: '/admin/auditorslist',
       children: [
         {
           path: '/admin/auditorslist',
-          component: ()=>import('../components/admin/AuditorsList.vue')
+          component: () => import('../components/admin/AuditorsList.vue')
         },
         {
           path: '/admin/userslist',
-          component: ()=>import('../components/admin/UsersList.vue')
+          component: () => import('../components/admin/UsersList.vue')
         },
         {
           path: '/admin/banlist',
-          component: ()=>import('../components/admin/BanUsersList.vue')
+          component: () => import('../components/admin/BanUsersList.vue')
         },
         {
           path: '/admin/column',
-          component: ()=>import('../components/admin/columnList.vue')
+          component: () => import('../components/admin/columnList.vue')
         }
       ]
       // children: [

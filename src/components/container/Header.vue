@@ -29,7 +29,7 @@
         <el-avatar class="el-dropdown-link" v-bind:src="avatar" @click="comeTo('/personal/news')"></el-avatar>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item v-show="roleName === 'user'">
-            <router-link to="/personal/profile">
+            <router-link to="/personal">
               个人中心
             </router-link>
           </el-dropdown-item>
@@ -245,4 +245,5 @@ export default {
 
 .search button {
   float: left;
-}</style>
+}
+</style>
