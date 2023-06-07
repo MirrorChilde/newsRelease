@@ -28,7 +28,7 @@
       <el-dropdown>
         <el-avatar class="el-dropdown-link" v-bind:src="avatar" @click="comeTo('/personal/news')"></el-avatar>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-show="roleName === 'user'">
+          <el-dropdown-item v-show="roleName !== 'admin' && roleName !== 'auditor'">
             <router-link to="/personal">
               个人中心
             </router-link>

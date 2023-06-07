@@ -2,10 +2,10 @@
   <div class="news">
     <div class="top">
       <span>
-        共收到{{newsList.length}}条新闻发布信息
+        共收到{{ newsList.length }}条新闻发布信息
       </span>
       <div class="search">
-        <el-button @click="clearFilter" type="primary" >全部新闻</el-button>
+        <el-button @click="clearFilter" type="primary">全部新闻</el-button>
         <!-- <el-input style="width: 400px;"
           placeholder="请输入内容"
           v-model="input"
@@ -20,76 +20,43 @@
       </div>
     </div>
     <div class="newsList">
-      <el-table
-        ref="filterTable"
-        :data="newsList"
-        style="width: 100%"
-        :header-cell-style="{background:'#E8EBEF'}"
-        >
-        <el-table-column
-          label="更新时间"
-          width="260">
+      <el-table ref="filterTable" :data="newsList" style="width: 100%" :header-cell-style="{ background: '#E8EBEF' }">
+        <el-table-column label="更新时间" width="260">
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
             <span style="margin-left: 10px">{{ scope.row.updateTime }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          label="新闻名称"
-          width="380">
+        <el-table-column label="新闻名称" width="380">
           <template slot-scope="scope">
             <span style="margin-left: 10px">{{ scope.row.title }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          label="新闻栏目"
-          width="120"
-          :formatter="formatter"
-          :filters="plates"
-          :filter-method="filterPlate"
-          >
+        <el-table-column label="新闻栏目" width="120" :formatter="formatter" :filters="plates" :filter-method="filterPlate">
           <template slot-scope="scope">
             <span style="margin-left: 10px">{{ scope.row.plateName }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="tag"
-          label="状态"
-          width="150"
-          :formatter="formatter"
-          :filters="[ { text: '审核中', value: '审核中' },{ text: '审核成功', value: '审核成功' },{ text: '审核不通过', value: '审核不通过' }]"
-          :filter-method="filterTag"
-          filter-placement="bottom-end">
+        <el-table-column prop="tag" label="状态" width="150" :formatter="formatter"
+          :filters="[{ text: '审核中', value: '审核中' }, { text: '审核成功', value: '审核成功' }, { text: '审核不通过', value: '审核不通过' }]"
+          :filter-method="filterTag" filter-placement="bottom-end">
           <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.status == '0' ?'primary': (scope.row.status == '3' ? 'danger': 'success') "
-              disable-transitions>{{scope.row.status == '0' ?'审核中': (scope.row.status == '3' ? '审核不通过': '审核成功')}}</el-tag>
+            <el-tag :type="scope.row.status == '0' ? 'primary' : (scope.row.status == '3' ? 'danger' : 'success')"
+              disable-transitions>{{ scope.row.status == '0' ? '审核中' : (scope.row.status == '3' ? '审核不通过' : '审核成功') }}</el-tag>
           </template>
         </el-table-column>
-        
+
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              @click="handleEdit(scope.$index, scope.row)">查看</el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
+            <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
-        </el-table>
+      </el-table>
     </div>
     <div class="block" style="margin-top: 15px;">
-      <el-pagination
-      small
-      @size-change="getNewsList"
-      @current-change="getNewsList"
-      :current-page.sync="current"
-      :page-sizes="[10, 20, 30, 40]"
-      :page-size="size"
-      layout="sizes, prev, pager, next"
-      :total="total">
+      <el-pagination small @size-change="getNewsList" @current-change="getNewsList" :current-page.sync="current"
+        :page-sizes="[10, 20, 30, 40]" :page-size="size" layout="sizes, prev, pager, next" :total="total">
       </el-pagination>
     </div>
   </div>
@@ -98,51 +65,52 @@
 <script>
 export default {
   name: 'News',
-  data () {
+  data() {
     return {
-      input:'',
+      input: '',
       newsList: [],
       plates: [],
       current: 1,
       size: 10,
-      total:500
-      
-      }
+      total: 500
+
+    }
   },
-  mounted() { 
+  mounted() {
     this.getNewsList();
     this.getPlateList();
   },
   methods: {
     handleEdit(index, row) {
       // console.log(index, row);
-      this.$router.push("/detail/"+row.id)
-        
-      },
-    handleDelete(index, row) {
-        // console.log(index, row);
-        this.axios({
-            method: "DELETE",
-            url:"/api/news/delete?newsId="+this.newsList[index].id
-          }).then(res => {
-            // console.log(res);
-            this.$message({
-                type:'success',
-                message: '删除成功'
-              });
-          }).catch(err => { 
-            console.log(err);
-          })
+      this.$router.push("/detail/" + row.id)
+
     },
-    getNewsList() { 
+    handleDelete(index, row) {
+      // console.log(index, row);
+      this.axios({
+        method: "DELETE",
+        url: "/api/news/delete?newsId=" + this.newsList[index].id
+      }).then(res => {
+        // console.log(res);
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        });
+        this.getNewsList();
+      }).catch(err => {
+        console.log(err);
+      })
+    },
+    getNewsList() {
       this.axios({
         method: "GET",
         // url:`/api/audit/newsList?current=${this.current}&&size=${this.size}`
-        url:`/api/news/myNews?current=${this.current}&&size=${this.size}`
-      }).then(res => { 
+        url: `/api/news/myNews?current=${this.current}&&size=${this.size}`
+      }).then(res => {
         // console.log(res);
         this.newsList = res.data.data.records;
-      }).catch(err => { 
+      }).catch(err => {
         console.log(err);
       })
     },
@@ -151,13 +119,13 @@ export default {
     },
     filterPlate(value, row) {
       // console.log(row);
-      return row.plateName==value
+      return row.plateName == value
     },
     filterTag(value, row) {
       var key = {
         "审核中": 0,
-        "审核成功":2,
-        "审核不通过":3
+        "审核成功": 2,
+        "审核不通过": 3
       }
       // console.log(key[value]);
       // var lable=value == '审核中' ?0: (scope.row.status == '3' ? '审核不通过': '审核成功')
@@ -170,19 +138,19 @@ export default {
     getPlateList() {
       this.axios({
         method: "GET",
-        url:"/api/plate/list"
+        url: "/api/plate/list"
       }).then(res => {
         // console.log(res);
-        var records=res.data.data.records
+        var records = res.data.data.records
         this.plates = records.map(e => {
           var obj = {
             text: e.name,
-            value:e.name
+            value: e.name
           }
           return obj
         })
         console.log(this.plates);
-      }).catch(err => { 
+      }).catch(err => {
         console.log(err);
       })
     },
@@ -201,12 +169,13 @@ export default {
   margin: 10px 0;
   /* width: 80%; */
 }
+
 .newsList {
   margin: 0px auto;
 }
 
-  a{
-    text-decoration: none;
-    color: #ffff;
-  }
+a {
+  text-decoration: none;
+  color: #ffff;
+}
 </style>
