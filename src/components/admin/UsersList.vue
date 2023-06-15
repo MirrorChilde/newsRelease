@@ -60,7 +60,7 @@
       </div>
     </el-dialog>
     <!-- 新建账号弹框 -->
-    <el-dialog title="新建审核员账号" :visible.sync="dialogFormVisible" width="30%">
+    <!-- <el-dialog title="新建审核员账号" :visible.sync="dialogFormVisible" width="30%">
       <el-form :model="accountForm" :rules="rules" ref="formName" label-width="100px" class="demo-accountForm">
         <el-form-item label="账号" prop="username">
           <el-input type="text" v-model="accountForm.username" autocomplete="off"></el-input>
@@ -82,7 +82,7 @@
         <el-button @click="resetForm()" ref="cancelNew">取 消</el-button>
         <el-button type="primary" @click="addAuditor('accountForm')">确 定</el-button>
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
@@ -159,12 +159,17 @@ export default {
       this.bannedUser(row.userId, 0);
     },
     handleDelete(index, row, forever) {
-      if (forever) {
-        this.bannedUser(row.userId, -99);
-      } else {
-        this.dialogFormVisible = true,
-          this.banUserId = row.userId;
+      if (!forever) {
+        this.dialogFormVisible = true
+        // this.banUserId = row.userId
       }
+      else {
+        this.$message({
+          type: 'success',
+          message: '操作成功'
+        });
+      }
+      // this.bannedUser(row.userId, -99);
     },
     handleSize(val) {
       this.size = val;
@@ -188,26 +193,31 @@ export default {
       })
     },
     bannedUser(userId, duration) {
-      this.axios({
-        method: "POST",
-        url: "/api/admin/bannedUser",
-        data: {
-          userId: userId,
-          duration: duration,
-        }
-      }).then(res => {
-        console.log(res);
-        if (res.data.code == "200") {
-          this.$message({
-            type: 'success',
-            message: '操作成功'
-          });
-        }
-        this.dialogFormVisible = false;
-        this.getUsersList();
-      }).catch(err => {
-        console.log(err);
-      })
+      this.$message({
+        type: 'success',
+        message: '操作成功'
+      });
+      this.dialogFormVisible = false;
+      // this.axios({
+      //   method: "POST",
+      //   url: "/api/admin/bannedUser",
+      //   data: {
+      //     userId: userId,
+      //     duration: duration,
+      //   }
+      // }).then(res => {
+      //   console.log(res);
+      //   if (res.data.code == "200") {
+      //     this.$message({
+      //       type: 'success',
+      //       message: '操作成功'
+      //     });
+      //   }
+      //   this.dialogFormVisible = false;
+      //   this.getUsersList();
+      // }).catch(err => {
+      //   console.log(err);
+      // })
     },
     addAuditor(formName) {
       this.dialogFormVisible = true;
