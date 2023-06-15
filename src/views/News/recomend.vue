@@ -23,7 +23,7 @@
               <div class="three-left">
                 <!-- <el-skeleton-item v-if="middle_list[0].image==null" variant="image" /> -->
                 <!-- <img v-else v-bind:src="'https://demo.xqstudy.top'+middle_list[0].image" @click="newsDetail(middle_list[0].newsId)"> -->
-                <img v-bind:src="middle_list[1].coverUrl" @click="newsDetail(middle_list[0].id)">
+                <img v-bind:src="middle_list[2].coverUrl" @click="newsDetail(middle_list[0].id)">
               </div>
             </div>
           </el-col>
@@ -197,7 +197,7 @@ export default {
       console.log(response)
       if (response.data.code === 200) {
         var length = response.data.data.length
-        that.img_list = response.data.data.slice(0, 4)
+        that.img_list = response.data.data.slice(1, 5)
         that.middle_list = response.data.data.slice(2, 6)
       } else {
         if (response.data.code != 3001)
@@ -336,7 +336,7 @@ body>.el-container {
 }
 
 .item div {
-  width: 80%;
+  width: 85%;
   height: 70%;
   transform: translate(10%, 15%);
   text-align: left;

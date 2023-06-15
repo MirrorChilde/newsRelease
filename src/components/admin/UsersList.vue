@@ -2,7 +2,7 @@
   <div class="news">
     <div class="top">
       <span @click="log">
-        共有<span style="color: #f56c6c;">{{ usersList.length }}</span>位用户信息
+        共有<span style="color: #f56c6c;">{{ total }}</span>位用户信息
       </span>
       <div>
         <el-button type="primary" icon="el-icon-plus" @click="addAuditor">
@@ -23,7 +23,9 @@
             <span>{{ scope.row.email }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="用户角色" width="200">
+        <el-table-column label="用户角色" ref="filterTable"
+          :filters="[{ text: '用户', value: '用户' }, { text: '新闻审核员', value: '新闻审核员' }, { text: '系统管理员', value: '系统管理员' }]"
+          :filter-method="filterRole" width="200">
           <template slot-scope="scope">
             <div slot="reference" class="title-wrapper">
               <!-- <el-tag size="medium" >{{ scope.row.focus?'已封禁':'正常' }}</el-tag> -->
@@ -46,7 +48,7 @@
       </el-table>
     </div>
     <div class="block" style="margin-top: 15px;">
-      <el-pagination small @size-change="getUsersList" @current-change="getUsersList" :current-page.sync="current"
+      <el-pagination small @size-change="handleSize" @current-change="handleCur" :current-page.sync="current"
         :page-sizes="[10, 20, 30, 40]" :page-size="size" layout="sizes, prev, pager, next" :total="total">
       </el-pagination>
     </div>
@@ -145,7 +147,7 @@ export default {
   },
   mounted() {
     let token = sessionStorage.getItem('token')
-    this.getUsersList(token);
+    this.getUsersList();
   },
   methods: {
     log() {
@@ -164,6 +166,14 @@ export default {
           this.banUserId = row.userId;
       }
     },
+    handleSize(val) {
+      this.size = val;
+      this.getUsersList();
+    },
+    handleCur(val) {
+      this.current = val;
+      this.getUsersList();
+    },
     getUsersList() {
       this.axios({
         method: "GET",
@@ -172,6 +182,7 @@ export default {
       }).then(res => {
         console.log(res);
         this.usersList = res.data.data.records.reverse();
+        this.total = +res.data.data.total
       }).catch(err => {
         console.log(err);
       })
@@ -200,7 +211,7 @@ export default {
     },
     addAuditor(formName) {
       this.dialogFormVisible = true;
-      this.$refs[formName].validate((valid) => {
+      this.$refs.formName.validate((valid) => {
         if (valid) {
           this.axios({
             method: "POST",
@@ -278,7 +289,29 @@ export default {
       }).catch(err => {
         console.log(err);
       })
-    }
+    },
+    // 选择器
+    clearFilter() {
+      this.$refs.filterTable.clearFilter();
+    },
+    filterRole(value, row) {
+      console.log(value);
+      // this.axios({
+      //   method: "GET",
+      //   url: `/api/user/admin/list?current=${this.current}&&size=${this.size}`,
+      //   header: this.token
+      // }).then(res => {
+      //   console.log(res);
+      //   var resList = res.data.data.records.reverse();
+      //   this.usersList = resList.map(e => {
+      //     return e.roleName == value
+      //   });
+      // }).catch(err => {
+      //   console.log(err);
+      // })
+      // var lable=value == '审核中' ?0: (scope.row.status == '3' ? '审核不通过': '审核成功')
+      return row.roleName == value;
+    },
   }
 }
 

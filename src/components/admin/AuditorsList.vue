@@ -2,7 +2,7 @@
   <div class="news">
     <div class="top">
       <span>
-        共获取<span style="color: #f56c6c;">{{ auditorsList.length }}</span>条审核员账号信息
+        共获取<span style="color: #f56c6c;">{{ total }}</span>条申请信息
       </span>
 
       <!-- <div>
@@ -45,7 +45,7 @@
       </el-table>
     </div>
     <div class="block" style="margin-top: 15px;">
-      <el-pagination small @size-change="getAuditorsList" @current-change="getAuditorsList" :current-page.sync="current"
+      <el-pagination small @size-change="handleSize" @current-change="handleCur" :current-page.sync="current"
         :page-sizes="[10, 20, 30, 40]" :page-size="size" layout="sizes, prev, pager, next" :total="total">
       </el-pagination>
     </div>
@@ -129,13 +129,22 @@ export default {
       console.log(index, row);
       this.deleteAuditor(row.id, row.account);
     },
-    getAuditorsList() {
+    handleSize(val) {
+      this.size = val;
+      this.getAuditorsList();
+    },
+    handleCur(val) {
+      this.current = val;
+      this.getAuditorsList();
+    },
+    getAuditorsList(val) {
       this.axios({
         method: "GET",
         url: `/api/apply/publisher/list?current=${this.current}&&size=${this.size}`
       }).then(res => {
         console.log(res);
         this.auditorsList = res.data.data.records.reverse();
+        this.total = +res.data.data.total;
       }).catch(err => {
         console.log(err);
       })
