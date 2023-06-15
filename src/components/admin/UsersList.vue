@@ -60,7 +60,7 @@
       </div>
     </el-dialog>
     <!-- 新建账号弹框 -->
-    <!-- <el-dialog title="新建审核员账号" :visible.sync="dialogFormVisible" width="30%">
+    <el-dialog title="新建审核员账号" :visible.sync="dialogAuditVisible" width="30%">
       <el-form :model="accountForm" :rules="rules" ref="formName" label-width="100px" class="demo-accountForm">
         <el-form-item label="账号" prop="username">
           <el-input type="text" v-model="accountForm.username" autocomplete="off"></el-input>
@@ -82,7 +82,7 @@
         <el-button @click="resetForm()" ref="cancelNew">取 消</el-button>
         <el-button type="primary" @click="addAuditor('accountForm')">确 定</el-button>
       </div>
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
@@ -105,6 +105,7 @@ export default {
       changeFormVisible: false,
       usersList: [],
       dialogFormVisible: false,
+      dialogAuditVisible: false,
       banUserId: '',
       duration: 1,
       current: 1,
@@ -119,7 +120,7 @@ export default {
       },
       rules: {
         username: [
-          { min: 8, max: 16, message: '账号必须为8-16位', required: true, trigger: 'blur' }
+          { min: 6, max: 16, message: '账号必须为6-16位', required: true, trigger: 'blur' }
         ],
         password: [
           { min: 6, max: 16, message: '密码长度不小于6位，不大于16位', required: true, trigger: 'blur' }
@@ -220,7 +221,7 @@ export default {
       // })
     },
     addAuditor(formName) {
-      this.dialogFormVisible = true;
+      this.dialogAuditVisible = true;
       this.$refs.formName.validate((valid) => {
         if (valid) {
           this.axios({
@@ -234,7 +235,7 @@ export default {
                 type: 'success',
                 message: "新建账号成功"
               })
-              this.dialogFormVisible = false
+              this.dialogAuditVisible = false
             }
             else
               this.$message({
@@ -254,7 +255,7 @@ export default {
       });
     },
     resetForm() {
-      this.dialogFormVisible = false
+      this.dialogAuditVisible = false
       this.$refs[formName].resetFields();
     },
     open() {
