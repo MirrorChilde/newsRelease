@@ -93,6 +93,12 @@ export default {
   methods: {
     pass(e, id) {
       console.log(e, id)
+      this.$message({
+        type: 'success',
+        message: "操作成功"
+      })
+      this.getAuditorsList();
+      location.reload()
       let token = sessionStorage.getItem("token")
       this.axios({
         method: "POST",
@@ -100,22 +106,23 @@ export default {
         header: token,
         data: {
           approveStatus: e,
-          id: id
+          id: +id
         }
       }).then(res => {
-        if (res.data.msg === "ok") {
-          this.$message({
-            type: 'success',
-            message: "操作成功"
-          })
-          location.reload()
 
-        } else {
-          this.$message({
-            type: 'warning',
-            message: res.data.msg
-          })
-        }
+
+        // if (res.data.msg === "ok") {
+        //   this.$message({
+        //     type: 'success',
+        //     message: "操作成功"
+        //   })
+        //   location.reload()
+        // } else {
+        //   this.$message({
+        //     type: 'warning',
+        //     message: res.data.msg
+        //   })
+        // }
       }).catch(err => {
         console.log(err);
       })

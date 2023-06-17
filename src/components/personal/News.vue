@@ -2,7 +2,7 @@
   <div class="news">
     <div class="top">
       <span>
-        共收到{{ newsList.length }}条新闻发布信息
+        共收到{{ total }}条新闻发布信息
       </span>
       <div class="search">
         <el-button @click="clearFilter" type="primary">全部新闻</el-button>
@@ -42,7 +42,8 @@
           :filter-method="filterTag" filter-placement="bottom-end">
           <template slot-scope="scope">
             <el-tag :type="scope.row.status == '0' ? 'primary' : (scope.row.status == '3' ? 'danger' : 'success')"
-              disable-transitions>{{ scope.row.status == '0' ? '审核中' : (scope.row.status == '3' ? '审核不通过' : '审核成功') }}</el-tag>
+              disable-transitions>{{ scope.row.status == '0' ? '审核中' : (scope.row.status == '3' ? '审核不通过' : '审核成功')
+              }}</el-tag>
           </template>
         </el-table-column>
 
@@ -110,6 +111,7 @@ export default {
       }).then(res => {
         // console.log(res);
         this.newsList = res.data.data.records;
+        this.total = +res.data.data.total;
       }).catch(err => {
         console.log(err);
       })
