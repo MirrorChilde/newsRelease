@@ -333,6 +333,7 @@ body>.el-container {
 .item:hover {
   cursor: pointer;
   text-decoration: underline;
+
 }
 
 .item div {
@@ -344,9 +345,12 @@ body>.el-container {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   word-break: break-all;
   -webkit-box-orient: vertical;
+  -webkit-box-orient: vertical;
+  /*垂直排列*/
+  line-clamp: 2;
 }
 
 .newsClass {
